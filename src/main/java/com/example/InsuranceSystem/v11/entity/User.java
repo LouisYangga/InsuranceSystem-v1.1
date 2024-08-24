@@ -3,8 +3,6 @@ package com.example.InsuranceSystem.v11.entity;
 import java.util.ArrayList;
     import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.CascadeType;
     import jakarta.persistence.Embedded;
     import jakarta.persistence.Entity;
@@ -13,7 +11,8 @@ import jakarta.persistence.CascadeType;
     import jakarta.persistence.Id;
     import jakarta.persistence.OneToMany;
     import jakarta.persistence.Table;
-    import lombok.Getter;
+import jakarta.validation.constraints.Size;
+import lombok.Getter;
     import lombok.NoArgsConstructor;
     import lombok.Setter;
     import lombok.ToString;
@@ -32,6 +31,7 @@ import jakarta.persistence.CascadeType;
         @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
         @ToString.Exclude
         private @Getter @Setter List<InsurancePolicy> insurancePolicies = new ArrayList<>();
+        @Size(min = 3, max = 50, message = "Username must be between 3 and 50 characters")
         private @Getter @Setter String username;
         // @JsonIgnore
         // @ToString.Exclude

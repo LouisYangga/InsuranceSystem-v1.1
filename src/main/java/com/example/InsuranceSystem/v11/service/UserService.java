@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.InsuranceSystem.v11.DTO.UpdateUserDTO;
 import com.example.InsuranceSystem.v11.entity.InsurancePolicy;
 import com.example.InsuranceSystem.v11.entity.User;
 import com.example.InsuranceSystem.v11.exception.InsuranceExceptions;
@@ -43,6 +44,27 @@ public class UserService {
     public User findByUsername(String username) {
         User user = userRepository.findByUsername(username);
         return user;
+    }
+    @Transactional
+    public User updateUser(Long userId, UpdateUserDTO updateUserDTO){
+        User existingUser = findUserById(userId).orElseThrow(()->new InsuranceExceptions.UserNotFoundException("User Not Found"));
+        if (updateUserDTO.getName() != null) {
+            existingUser.setName(updateUserDTO.getName());
+        }
+        if (updateUserDTO.getAddress() != null) {
+            existingUser.setAddress(updateUserDTO.getAddress());
+        }
+        return userRepository.save(existingUser);
+    }
+    @Transactional
+    public String updatePassword(String username, String oldPassword, String newPassword){
+        User user = findByUsername(username);
+        if(oldPassword.equals(user.getPassword())){
+            user.setPassword(newPassword);
+            return "Password for Username: " + user.getUsername() + " has been updated";
+        }else{
+            throw new InsuranceExceptions.WrongPasswordException("Wrong Password");
+        }
     }
     //CORE LOGIC
     public boolean addPolicy(InsurancePolicy insurancePolicy, Long userId){

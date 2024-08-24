@@ -1,6 +1,8 @@
 package com.example.InsuranceSystem.v11.controller;
 
 import java.util.List;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.InsuranceSystem.v11.ApiResponse;
 import com.example.InsuranceSystem.v11.DTO.DynamicDTO;
 import com.example.InsuranceSystem.v11.DTO.InsurancePolicyDTO;
 import com.example.InsuranceSystem.v11.entity.InsurancePolicy;
@@ -75,7 +78,7 @@ public class InsurancePolicyController {
     }
     
     @PostMapping
-    public ResponseEntity<String> addPolicy(@RequestBody InsurancePolicyDTO insurancePolicyDTO){
+    public ResponseEntity<ApiResponse> addPolicy(@RequestBody InsurancePolicyDTO insurancePolicyDTO){
         try {
             String policyType = insurancePolicyDTO.getInsuranceType();
             InsurancePolicy insurancePolicy = insurancePolicyService.createInsurancePolicy(insurancePolicyDTO);
@@ -87,13 +90,18 @@ public class InsurancePolicyController {
             insurancePolicy.setUser(user);
             // Add the policy
             boolean success = userService.addPolicy(insurancePolicy, insurancePolicy.getUser().getUserId());
+            ApiResponse response;
             if (success) {
-                return ResponseEntity.ok(policyType + " Policy added successfully");
+                response = new ApiResponse(policyType + " Policy added successfully");
+                return new ResponseEntity<>(response,HttpStatus.CREATED);
             } else {
-                return ResponseEntity.status(500).body("Failed to add policy");
+                response = new ApiResponse("Failed to add policy");
+
+                return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
             }
         } catch (Exception e) {
-            return ResponseEntity.status(400).body(e.getMessage());
+            ApiResponse response = new ApiResponse(e.getMessage());
+            return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
         }
     }
 

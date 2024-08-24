@@ -18,4 +18,10 @@ public class InsuranceExceptions {
             super(message);
         }
     }
+    public static class WrongPasswordException extends RuntimeException {
+        public WrongPasswordException(String message) {
+            super(message);
+        }
+    }
+
 }

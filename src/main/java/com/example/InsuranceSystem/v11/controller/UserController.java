@@ -1,8 +1,12 @@
 package com.example.InsuranceSystem.v11.controller;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.example.InsuranceSystem.v11.ApiResponse;
 import com.example.InsuranceSystem.v11.DTO.DynamicDTO;
+import com.example.InsuranceSystem.v11.DTO.PasswordDTO;
+import com.example.InsuranceSystem.v11.DTO.UpdateUserDTO;
 import com.example.InsuranceSystem.v11.DTO.UserPaymentRequestDTO;
 import com.example.InsuranceSystem.v11.entity.User;
 import com.example.InsuranceSystem.v11.exception.InsuranceExceptions;
@@ -13,6 +17,10 @@ import jakarta.validation.Valid;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
+
 
 
 @RestController
@@ -31,15 +39,15 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<User> getUserById(@PathVariable Long userId) {
+    @GetMapping("/id")
+    public ResponseEntity<User> getUserById(@RequestParam (name="id",defaultValue = "0") Long userId) {
         Optional<User> user = userService.findUserById(userId);
         return user.map(ResponseEntity::ok)
                    .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
+    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
         User exists = userService.findByUsername(user.getUsername());
         if(exists !=null ){
             throw new UsernameAlreadyExistsException("Username Has Been Used");
@@ -63,6 +71,17 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("/{userId}")
+    public ResponseEntity<User> updateUser(@PathVariable Long userId, @RequestBody UpdateUserDTO updateUserDTO){
+        User user = userService.updateUser(userId, updateUserDTO);
+        return ResponseEntity.ok(user);
+    }
+    @PutMapping("password/{username}")
+    public ResponseEntity<ApiResponse> putMethodName(@PathVariable String username, @RequestBody PasswordDTO passwordDTO) {
+        String msg = userService.updatePassword(username, passwordDTO.getOldPassword(), passwordDTO.getNewPassword());
+        ApiResponse response = new ApiResponse(msg);
+        return new ResponseEntity<>(response,HttpStatus.ACCEPTED);
+    }
     //CORE LOGIC
     @PostMapping("/payment")
     public ResponseEntity<Double> calcUserTotalPayment(@Valid @RequestBody UserPaymentRequestDTO userPaymentRequestDTO){

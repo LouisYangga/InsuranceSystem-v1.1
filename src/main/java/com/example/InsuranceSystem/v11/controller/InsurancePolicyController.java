@@ -2,6 +2,7 @@ package com.example.InsuranceSystem.v11.controller;
 
 import java.util.List;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,6 +40,11 @@ public class InsurancePolicyController {
     public ResponseEntity<InsurancePolicy> getPolicyById(@PathVariable Long policyId){
         InsurancePolicy policy = insurancePolicyService.getInsurancePolicyById(policyId);
         return ResponseEntity.ok(policy);
+    }
+    @DeleteMapping("/{policyId}")
+    public ResponseEntity<Void> deletePolicy(@PathVariable Long policyId) { 
+        insurancePolicyService.deleteById(policyId);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/username")

@@ -11,6 +11,7 @@ public interface InsurancePolicyRepository extends JpaRepository<InsurancePolicy
     InsurancePolicy findByIdAndUserUserId(Long policyId, Long userId);
     List<InsurancePolicy> findByPolicyHolderUsername(String policyHolderUsername);
     List<InsurancePolicy> findByInsuranceType(String insuranceType);
+    void deleteByPolicyHolderUsername(String policyHolderUsername);
 }
 
 

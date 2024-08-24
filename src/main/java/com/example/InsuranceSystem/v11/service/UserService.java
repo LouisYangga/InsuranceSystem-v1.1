@@ -34,7 +34,10 @@ public class UserService {
         }
         return user;
     }
+    @Transactional
     public void deleteUser(Long id) {
+        User user = findUserById(id).orElseThrow();
+        insurancePolicyService.deleteInsurancePolicyByUsername(user.getUsername());
         userRepository.deleteById(id);
     }
     public User findByUsername(String username) {

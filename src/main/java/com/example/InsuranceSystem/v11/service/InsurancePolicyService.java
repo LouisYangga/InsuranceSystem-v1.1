@@ -31,6 +31,12 @@ public class InsurancePolicyService {
     public List<InsurancePolicy> getInsurancePolicyByType(String insuranceBytype){
         return insurancePolicyRepository.findByInsuranceType(insuranceBytype);
     }
+    public void deleteInsurancePolicyByUsername(String username){
+        insurancePolicyRepository.deleteByPolicyHolderUsername(username);
+    }
+    public void deleteById(Long id){
+        insurancePolicyRepository.deleteById(id);
+    }
     public InsurancePolicy saveInsurancePolicy(InsurancePolicy insurancePolicy) {
         return insurancePolicyRepository.save(insurancePolicy);
     }

@@ -9,6 +9,8 @@ import com.example.InsuranceSystem.v11.entity.User;
 import com.example.InsuranceSystem.v11.exception.InsuranceExceptions;
 import com.example.InsuranceSystem.v11.repository.UserRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class UserService {
     private final UserRepository userRepository;
@@ -24,6 +26,7 @@ public class UserService {
     public Optional<User> findUserById(Long id) {
         return userRepository.findById(id);
     }
+    @Transactional
     public User saveUser(User user){
         userRepository.save(user);
         for(InsurancePolicy ins:user.getInsurancePolicies()){

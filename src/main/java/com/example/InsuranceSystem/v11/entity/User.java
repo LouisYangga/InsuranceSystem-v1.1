@@ -32,9 +32,9 @@ import jakarta.persistence.CascadeType;
         @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
         @ToString.Exclude
         private @Getter @Setter List<InsurancePolicy> insurancePolicies = new ArrayList<>();
-        private @Getter @Setter int flatRate;
         private @Getter @Setter String username;
-        @JsonIgnore
+        // @JsonIgnore
+        // @ToString.Exclude
         private @Getter @Setter String password;
         @Embedded
         private @Getter @Setter Address address;
@@ -57,12 +57,8 @@ import jakarta.persistence.CascadeType;
             insurancePolicy.setUser(this); // Set the user for the policy
             insurancePolicies.add(insurancePolicy);
         }   
-        // public boolean createThirdPartyPolicy(String policyKind, int id, Car car, int numberOfClaims, MyDate expiryDate, String comments) throws ExceptionHandling, PolicyNameException {
-        //     return addPolicy(new ThirdPartyPolicy(policyKind, id, car, numberOfClaims, expiryDate, comments));
-        // }
         // public void removePolicy(InsurancePolicy insurancePolicy) {
         //     insurancePolicies.remove(insurancePolicy);
         //     insurancePolicy.setUser(null); // Unset the user from the policy
         // }
-        
     }

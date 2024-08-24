@@ -44,6 +44,7 @@ public class UserController {
         if(exists !=null ){
             throw new UsernameAlreadyExistsException("Username Has Been Used");
         }
+        
         User createdUser = userService.saveUser(user);
         return ResponseEntity.ok(createdUser);
     }

@@ -49,7 +49,7 @@ public class UserController {
         return ResponseEntity.ok(createdUser);
     }
 
-    @PostMapping("/{username}")
+    @GetMapping("/{username}")
     public ResponseEntity<User> findByUsername(@PathVariable String username){
         User user = userService.findByUsername(username);
         if(user==null){

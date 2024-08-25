@@ -76,6 +76,16 @@ public class InsurancePolicyController {
         data.setField("paymentCost", cost);
         return ResponseEntity.ok(data);
     }
+    @GetMapping("/model")
+    public ResponseEntity<List<InsurancePolicy>> filterByCarModel(@RequestParam(name="model", defaultValue="") String carModel) {
+        List<InsurancePolicy> policies = insurancePolicyService.filterByCarsModel(carModel);
+        return ResponseEntity.ok(policies);
+    }
+    @GetMapping("/carType")
+    public ResponseEntity<List<InsurancePolicy>> filterByCarType(@RequestParam(name="type", defaultValue = "") String type) {
+        List<InsurancePolicy> policies = insurancePolicyService.filterByCarsType(type);
+        return ResponseEntity.ok(policies); 
+    }
     
     @PostMapping
     public ResponseEntity<ApiResponse> addPolicy(@RequestBody InsurancePolicyDTO insurancePolicyDTO){

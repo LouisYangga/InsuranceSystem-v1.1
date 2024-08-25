@@ -8,6 +8,7 @@ import com.example.InsuranceSystem.v11.DTO.DynamicDTO;
 import com.example.InsuranceSystem.v11.DTO.PasswordDTO;
 import com.example.InsuranceSystem.v11.DTO.UpdateUserDTO;
 import com.example.InsuranceSystem.v11.DTO.UserPaymentRequestDTO;
+import com.example.InsuranceSystem.v11.entity.InsurancePolicy;
 import com.example.InsuranceSystem.v11.entity.User;
 import com.example.InsuranceSystem.v11.exception.InsuranceExceptions;
 import com.example.InsuranceSystem.v11.exception.UsernameAlreadyExistsException;
@@ -20,6 +21,9 @@ import java.util.Optional;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 
@@ -46,6 +50,28 @@ public class UserController {
                    .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/{username}")
+    public ResponseEntity<User> findByUsername(@PathVariable String username){
+        User user = userService.findByUsername(username);
+        if(user==null){
+            throw new InsuranceExceptions.UserNotFoundException("User Not Found");
+        }
+        return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("/model")
+    public ResponseEntity<List<InsurancePolicy>> filterByCarModel(
+        @RequestParam (name= "model", defaultValue = " ") String carModel,@RequestParam(name = "id", defaultValue = "0")Long userId) {
+        return ResponseEntity.ok(userService.filterByCarsModel(userId, carModel));
+    }
+    
+    @GetMapping("/carType")
+    public ResponseEntity<List<InsurancePolicy>> getMethodName(
+        @RequestParam(name = "type",defaultValue = "") String type, @RequestParam(name = "id", defaultValue = "0")Long userId) {
+        return ResponseEntity.ok(userService.filterByCarsType(userId, type));
+    }
+    
+
     @PostMapping
     public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
         User exists = userService.findByUsername(user.getUsername());
@@ -57,37 +83,12 @@ public class UserController {
         return ResponseEntity.ok(createdUser);
     }
 
-    @GetMapping("/{username}")
-    public ResponseEntity<User> findByUsername(@PathVariable String username){
-        User user = userService.findByUsername(username);
-        if(user==null){
-            throw new InsuranceExceptions.UserNotFoundException("User Not Found");
-        }
-        return ResponseEntity.ok(user);
-    }
-    @DeleteMapping("/{userId}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long userId) { 
-        userService.deleteUser(userId);
-        return ResponseEntity.noContent().build();
-    }
-
-    @PutMapping("/{userId}")
-    public ResponseEntity<User> updateUser(@PathVariable Long userId, @RequestBody UpdateUserDTO updateUserDTO){
-        User user = userService.updateUser(userId, updateUserDTO);
-        return ResponseEntity.ok(user);
-    }
-    @PutMapping("password/{username}")
-    public ResponseEntity<ApiResponse> putMethodName(@PathVariable String username, @RequestBody PasswordDTO passwordDTO) {
-        String msg = userService.updatePassword(username, passwordDTO.getOldPassword(), passwordDTO.getNewPassword());
-        ApiResponse response = new ApiResponse(msg);
-        return new ResponseEntity<>(response,HttpStatus.ACCEPTED);
-    }
-    //CORE LOGIC
     @PostMapping("/payment")
     public ResponseEntity<Double> calcUserTotalPayment(@Valid @RequestBody UserPaymentRequestDTO userPaymentRequestDTO){
         double total = userService.calcUserPayment(userPaymentRequestDTO.getUsername(),userPaymentRequestDTO.getFlatRate());
         return ResponseEntity.ok(total);
     }
+
     @PostMapping("/paymentByType")
     public ResponseEntity<DynamicDTO> calcPaymentByType(@Valid @RequestBody UserPaymentRequestDTO userPaymentRequestDTO){
         String username = userPaymentRequestDTO.getUsername();
@@ -101,4 +102,22 @@ public class UserController {
         return ResponseEntity.ok(data);
     }
 
+    @PutMapping("/{userId}")
+    public ResponseEntity<User> updateUser(@PathVariable Long userId, @RequestBody UpdateUserDTO updateUserDTO){
+        User user = userService.updateUser(userId, updateUserDTO);
+        return ResponseEntity.ok(user);
+    }
+
+    @PutMapping("password/{username}")
+    public ResponseEntity<ApiResponse> updatePassword(@PathVariable String username, @RequestBody PasswordDTO passwordDTO) {
+        String msg = userService.updatePassword(username, passwordDTO.getOldPassword(), passwordDTO.getNewPassword());
+        ApiResponse response = new ApiResponse(msg);
+        return new ResponseEntity<>(response,HttpStatus.ACCEPTED);
+    }
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long userId) { 
+        userService.deleteUser(userId);
+        return ResponseEntity.noContent().build();
+    }
 }

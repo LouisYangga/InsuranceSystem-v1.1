@@ -96,4 +96,14 @@ public class UserService {
             throw new InsuranceExceptions.UserNotFoundException("User Not Found For: " + username);
         }
     }
+    public List<InsurancePolicy> filterByCarsModel(Long userId, String model){
+        User user = findUserById(userId).orElseThrow(()-> new InsuranceExceptions.UserNotFoundException("User Not Found"));
+        List<InsurancePolicy> policies = user.getInsurancePolicies();
+        return insurancePolicyService.filterByCarModel(policies, model);
+    }
+    public List<InsurancePolicy> filterByCarsType(Long userId, String carType){
+        User user = findUserById(userId).orElseThrow(()-> new InsuranceExceptions.UserNotFoundException("User Not Found"));
+        List<InsurancePolicy> policies = user.getInsurancePolicies();
+        return insurancePolicyService.filterByCarType(policies, carType);
+    }
 }

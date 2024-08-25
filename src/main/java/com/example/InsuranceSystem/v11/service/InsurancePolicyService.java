@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.example.InsuranceSystem.v11.DTO.DTOConverter;
 import com.example.InsuranceSystem.v11.DTO.InsurancePolicyDTO;
 import com.example.InsuranceSystem.v11.entity.Car;
+import com.example.InsuranceSystem.v11.entity.CarType;
 import com.example.InsuranceSystem.v11.entity.ComprehensivePolicy;
 import com.example.InsuranceSystem.v11.entity.InsurancePolicy;
 import com.example.InsuranceSystem.v11.entity.InsurancePolicyFactory;
@@ -14,7 +15,7 @@ import com.example.InsuranceSystem.v11.entity.MyDate;
 import com.example.InsuranceSystem.v11.entity.ThirdPartyPolicy;
 import com.example.InsuranceSystem.v11.exception.InsuranceExceptions;
 import com.example.InsuranceSystem.v11.repository.InsurancePolicyRepository;
-
+import java.util.stream.Collectors;
 @Service
 public class InsurancePolicyService { 
     private final InsurancePolicyRepository insurancePolicyRepository;
@@ -82,4 +83,24 @@ public class InsurancePolicyService {
             }
             return insurancePolicy;             
     }
-}
+    public List<InsurancePolicy> filterByCarsModel(String carModel){
+        List<InsurancePolicy> policies = insurancePolicyRepository.findByCarModelIgnoreCase(carModel);
+        return policies;
+    }
+    public List<InsurancePolicy> filterByCarModel(List<InsurancePolicy> policies, String model) {
+        return policies.stream()
+                       .filter(policy -> policy.getCar().getModel().equalsIgnoreCase(model))
+                       .collect(Collectors.toList());
+    }
+    public List<InsurancePolicy> filterByCarsType(String type) throws InsuranceExceptions.InvalidCarTypeException{
+        CarType carType = CarType.validate(type);
+        List<InsurancePolicy> policies = insurancePolicyRepository.findByCarType(carType);
+        return policies;
+    }
+    public List<InsurancePolicy> filterByCarType(List<InsurancePolicy> policies, String type) {
+        CarType carType = CarType.validate(type);
+        return policies.stream()
+                       .filter(policy -> policy.getCar().getType() == carType)
+                       .collect(Collectors.toList());
+    }
+}   

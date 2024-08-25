@@ -2,6 +2,8 @@ package com.example.InsuranceSystem.v11.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import com.example.InsuranceSystem.v11.entity.CarType;
 import com.example.InsuranceSystem.v11.entity.InsurancePolicy;
 import java.util.List;
 
@@ -12,6 +14,8 @@ public interface InsurancePolicyRepository extends JpaRepository<InsurancePolicy
     List<InsurancePolicy> findByPolicyHolderUsername(String policyHolderUsername);
     List<InsurancePolicy> findByInsuranceType(String insuranceType);
     void deleteByPolicyHolderUsername(String policyHolderUsername);
+    List<InsurancePolicy> findByCarModelIgnoreCase(String model);
+    List<InsurancePolicy> findByCarType(CarType type);
 }
 
 

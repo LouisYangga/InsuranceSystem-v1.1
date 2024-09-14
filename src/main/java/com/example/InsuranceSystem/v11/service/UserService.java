@@ -1,6 +1,8 @@
 package com.example.InsuranceSystem.v11.service;
 
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -105,5 +107,20 @@ public class UserService {
         User user = findUserById(userId).orElseThrow(()-> new InsuranceExceptions.UserNotFoundException("User Not Found"));
         List<InsurancePolicy> policies = user.getInsurancePolicies();
         return insurancePolicyService.filterByCarType(policies, carType);
+    }
+    public List<InsurancePolicy> filterByExpiryDateAfter(Long userId, LocalDate date){
+        User user = findUserById(userId).orElseThrow(()-> new InsuranceExceptions.UserNotFoundException("User Not Found"));
+        List<InsurancePolicy> policies = user.getInsurancePolicies();
+        return insurancePolicyService.filterByExpiryDateAfer(policies, date);
+    }
+    public List<InsurancePolicy> filterByExpiryDateBefore(Long userId, LocalDate date){
+        User user = findUserById(userId).orElseThrow(()-> new InsuranceExceptions.UserNotFoundException("User Not Found"));
+        List<InsurancePolicy> policies = user.getInsurancePolicies();
+        return insurancePolicyService.filterByExpiryDateBefore(policies, date);
+    }
+    public List<InsurancePolicy> filterByExpiryDateBetween(Long userId, LocalDate startDate, LocalDate endDate){
+        User user = findUserById(userId).orElseThrow(()-> new InsuranceExceptions.UserNotFoundException("User Not Found"));
+        List<InsurancePolicy> policies = user.getInsurancePolicies();
+        return insurancePolicyService.filterByExpiryDateBetween(policies, startDate, endDate);
     }
 }

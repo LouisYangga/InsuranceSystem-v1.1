@@ -1,7 +1,8 @@
 package com.example.InsuranceSystem.v11.controller;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -85,6 +86,29 @@ public class InsurancePolicyController {
     public ResponseEntity<List<InsurancePolicy>> filterByCarType(@RequestParam(name="type", defaultValue = "") String type) {
         List<InsurancePolicy> policies = insurancePolicyService.filterByCarsType(type);
         return ResponseEntity.ok(policies); 
+    }
+    @GetMapping("/before")
+    public ResponseEntity<List<InsurancePolicy>> filterByExpiryDateBefore(@RequestParam(name="date", defaultValue = "") String dateString) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDate date = LocalDate.parse(dateString, formatter);
+        List<InsurancePolicy> policies = insurancePolicyService.filterByExpiryDateBefore(date);
+        return ResponseEntity.ok(policies);
+    }
+    @GetMapping("/after")
+    public ResponseEntity<List<InsurancePolicy>> filterByExpiryDateAfer(@RequestParam(name="date", defaultValue = "") String dateString) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDate date = LocalDate.parse(dateString, formatter);
+        List<InsurancePolicy> policies = insurancePolicyService.filterByExpiryDateAfter(date);
+        return ResponseEntity.ok(policies);
+    }
+    @GetMapping("/between")
+    public ResponseEntity<List<InsurancePolicy>> filterByExpiryDateBetween(
+        @RequestParam(name="start", defaultValue = "") String startDateString, @RequestParam(name="end", defaultValue = "") String endDateString) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDate startDate = LocalDate.parse(startDateString, formatter);
+        LocalDate endDate = LocalDate.parse(endDateString, formatter);
+        List<InsurancePolicy> policies = insurancePolicyService.filterByExpiryDateBetween(startDate,endDate);
+        return ResponseEntity.ok(policies);
     }
     
     @PostMapping

@@ -4,6 +4,8 @@ import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +21,8 @@ public class InsurancePolicyDTO {
     private Integer numberOfClaims;
     private CarDTO car;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @NotNull(message = "Expiry date cannot be empty")
+    @Future(message = "Expiry date should in the future")
     private LocalDate expiryDate;
     // Fields specific to ComprehensivePolicy
     private Integer driverAge;

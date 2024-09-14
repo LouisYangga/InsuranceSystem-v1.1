@@ -16,13 +16,10 @@ import com.example.InsuranceSystem.v11.service.UserService;
 
 import jakarta.validation.Valid;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 
@@ -66,12 +63,33 @@ public class UserController {
     }
     
     @GetMapping("/carType")
-    public ResponseEntity<List<InsurancePolicy>> getMethodName(
+    public ResponseEntity<List<InsurancePolicy>> filterByCarType(
         @RequestParam(name = "type",defaultValue = "") String type, @RequestParam(name = "id", defaultValue = "0")Long userId) {
         return ResponseEntity.ok(userService.filterByCarsType(userId, type));
     }
     
-
+    @GetMapping("/after")
+    public ResponseEntity<List<InsurancePolicy>> filterByExpiryDateAfter(
+        @RequestParam(name = "date",defaultValue = "") String dateString, @RequestParam(name = "id", defaultValue = "0")Long userId) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDate date = LocalDate.parse(dateString, formatter);
+        return ResponseEntity.ok(userService.filterByExpiryDateAfter(userId, date));
+    }
+    @GetMapping("/before")
+    public ResponseEntity<List<InsurancePolicy>> filterByExpiryDateBefore(
+        @RequestParam(name = "date",defaultValue = "") String dateString, @RequestParam(name = "id", defaultValue = "0")Long userId) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDate date = LocalDate.parse(dateString, formatter);
+        return ResponseEntity.ok(userService.filterByExpiryDateBefore(userId, date));
+    }
+    @GetMapping("/between")
+    public ResponseEntity<List<InsurancePolicy>> filterByExpiryDateAfter(
+        @RequestParam(name = "start",defaultValue = "") String startDateString,@RequestParam(name = "end",defaultValue = "") String endDateString, @RequestParam(name = "id", defaultValue = "0")Long userId) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDate startDate = LocalDate.parse(startDateString, formatter);
+        LocalDate endDate = LocalDate.parse(endDateString, formatter);
+        return ResponseEntity.ok(userService.filterByExpiryDateBetween(userId, startDate,endDate));
+    }
     @PostMapping
     public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
         User exists = userService.findByUsername(user.getUsername());

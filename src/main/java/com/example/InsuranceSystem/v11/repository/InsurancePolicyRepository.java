@@ -5,6 +5,8 @@ import org.springframework.stereotype.Repository;
 
 import com.example.InsuranceSystem.v11.entity.CarType;
 import com.example.InsuranceSystem.v11.entity.InsurancePolicy;
+
+import java.time.LocalDate;
 import java.util.List;
 
  
@@ -16,6 +18,9 @@ public interface InsurancePolicyRepository extends JpaRepository<InsurancePolicy
     void deleteByPolicyHolderUsername(String policyHolderUsername);
     List<InsurancePolicy> findByCarModelIgnoreCase(String model);
     List<InsurancePolicy> findByCarType(CarType type);
+    List<InsurancePolicy> findByExpiryDateBefore(LocalDate expiryDate);
+    List<InsurancePolicy> findByExpiryDateAfter(LocalDate expiryDate);
+    List<InsurancePolicy> findByExpiryDateBetween(LocalDate startDate, LocalDate endDate);
 }
 
 

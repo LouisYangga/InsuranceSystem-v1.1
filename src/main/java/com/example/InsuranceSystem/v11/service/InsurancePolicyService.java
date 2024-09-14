@@ -1,7 +1,9 @@
 package com.example.InsuranceSystem.v11.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import com.example.InsuranceSystem.v11.DTO.DTOConverter;
@@ -99,6 +101,34 @@ public class InsurancePolicyService {
         CarType carType = CarType.validate(type);
         return policies.stream()
                        .filter(policy -> policy.getCar().getType() == carType)
+                       .collect(Collectors.toList());
+    }
+
+    public List<InsurancePolicy> filterByExpiryDateAfter(LocalDate date){
+        List<InsurancePolicy> policies = insurancePolicyRepository.findByExpiryDateAfter(date);
+        return policies;
+    }
+    public List<InsurancePolicy> filterByExpiryDateAfer(List<InsurancePolicy> policies, LocalDate date) {
+        return policies.stream()
+                       .filter(policy -> policy.getExpiryDate().isAfter(date))
+                       .collect(Collectors.toList());
+    }
+    public List<InsurancePolicy> filterByExpiryDateBefore(LocalDate date){
+        List<InsurancePolicy> policies = insurancePolicyRepository.findByExpiryDateBefore(date);
+        return policies;
+    }
+    public List<InsurancePolicy> filterByExpiryDateBefore(List<InsurancePolicy> policies, LocalDate date) {
+        return policies.stream()
+                       .filter(policy -> policy.getExpiryDate().isBefore(date))
+                       .collect(Collectors.toList());
+    }
+    public List<InsurancePolicy> filterByExpiryDateBetween(LocalDate startDate, LocalDate endDate){
+        List<InsurancePolicy> policies = insurancePolicyRepository.findByExpiryDateBetween(startDate, endDate);
+        return policies;
+    }
+    public List<InsurancePolicy> filterByExpiryDateBetween(List<InsurancePolicy> policies, LocalDate starDate, LocalDate endDate) {
+        return policies.stream()
+                       .filter(policy -> policy.getExpiryDate().isAfter(starDate)&&policy.getExpiryDate().isBefore(endDate))
                        .collect(Collectors.toList());
     }
 }   

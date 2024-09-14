@@ -1,5 +1,7 @@
 package com.example.InsuranceSystem.v11.entity;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.Entity;
 import lombok.*;
 
@@ -10,7 +12,7 @@ public class ThirdPartyPolicy extends InsurancePolicy{
 
     protected @Getter @Setter String comments;
 
-    public ThirdPartyPolicy(String type, String policyHolderUsername, int numberofClaims,Car car, MyDate expirDate, String comments) {
+    public ThirdPartyPolicy(String type, String policyHolderUsername, int numberofClaims,Car car, LocalDate expirDate, String comments) {
         super(type, policyHolderUsername,numberofClaims, car, expirDate);
         this.comments = comments;
     }

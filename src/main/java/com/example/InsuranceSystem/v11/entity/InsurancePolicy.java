@@ -1,4 +1,5 @@
 package com.example.InsuranceSystem.v11.entity;
+import java.time.LocalDate;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -39,13 +40,11 @@ public abstract class InsurancePolicy {
     @JoinColumn(name = "user_id", nullable = false) // Ensure the foreign key column is named correctly
     @JsonIgnore
     private @Getter @Setter User user;
-
+    protected @Getter @Setter LocalDate expiryDate;
     @Embedded
     protected @Getter @Setter Car car;
-    @Embedded
-    protected @Getter @Setter MyDate expiryDate;
 
-    public InsurancePolicy(String type, String policyHolderUsername,int numberofClaims, Car car, MyDate expiryDate){
+    public InsurancePolicy(String type, String policyHolderUsername,int numberofClaims, Car car, LocalDate expiryDate){
         this.expiryDate = expiryDate;
         this.policyHolderUsername = policyHolderUsername;
         this.numberOfClaims = numberofClaims;

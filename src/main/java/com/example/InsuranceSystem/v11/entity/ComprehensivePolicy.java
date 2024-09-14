@@ -1,5 +1,7 @@
 package com.example.InsuranceSystem.v11.entity;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.Entity;
 import lombok.*;
 
@@ -12,7 +14,7 @@ public class ComprehensivePolicy extends InsurancePolicy{
 
     protected int driverAge;
     protected int level;
-    public ComprehensivePolicy(String type, String policyHolderUsername, int numberofClaims,Car car, MyDate expiryDate, int driverAge, int level) {
+    public ComprehensivePolicy(String type, String policyHolderUsername, int numberofClaims,Car car, LocalDate expiryDate, int driverAge, int level) {
         super(type,policyHolderUsername, numberofClaims, car, expiryDate);
         this.driverAge = driverAge;
         this.level = level; 

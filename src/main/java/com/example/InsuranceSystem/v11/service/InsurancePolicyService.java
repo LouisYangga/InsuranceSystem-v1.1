@@ -11,7 +11,6 @@ import com.example.InsuranceSystem.v11.entity.CarType;
 import com.example.InsuranceSystem.v11.entity.ComprehensivePolicy;
 import com.example.InsuranceSystem.v11.entity.InsurancePolicy;
 import com.example.InsuranceSystem.v11.entity.InsurancePolicyFactory;
-import com.example.InsuranceSystem.v11.entity.MyDate;
 import com.example.InsuranceSystem.v11.entity.ThirdPartyPolicy;
 import com.example.InsuranceSystem.v11.exception.InsuranceExceptions;
 import com.example.InsuranceSystem.v11.repository.InsurancePolicyRepository;
@@ -68,9 +67,8 @@ public class InsurancePolicyService {
             insurancePolicy.setNumberOfClaims((Integer) insurancePolicyDTO.getNumberOfClaims());
             //Convert CarDTO to Car entity
             Car car =  DTOConverter.convertToCarEntity(insurancePolicyDTO.getCar());
-            MyDate date = DTOConverter.convertToMyDateEntity(insurancePolicyDTO.getExpiryDate());
             insurancePolicy.setCar(car);
-            insurancePolicy.setExpiryDate(date);
+            insurancePolicy.setExpiryDate(insurancePolicyDTO.getExpiryDate());
             // Set type-specific properties
             if (insurancePolicy instanceof ComprehensivePolicy) {
                 ComprehensivePolicy comprehensivePolicy = (ComprehensivePolicy) insurancePolicy;

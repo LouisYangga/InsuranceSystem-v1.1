@@ -1,5 +1,9 @@
 package com.example.InsuranceSystem.v11.DTO;
 
+import java.time.LocalDate;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,12 +18,11 @@ public class InsurancePolicyDTO {
     private String policyHolderUsername;
     private Integer numberOfClaims;
     private CarDTO car;
-    private MyDateDTO expiryDate;
-
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    private LocalDate expiryDate;
     // Fields specific to ComprehensivePolicy
     private Integer driverAge;
     private Integer level;
-
     // Fields specific to ThirdPartyPolicy
     private String comments;
 }

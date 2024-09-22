@@ -23,5 +23,9 @@ public class InsuranceExceptions {
             super(message);
         }
     }
-
+    public static class InsuranceCompanyExists extends RuntimeException {
+        public InsuranceCompanyExists(String message) {
+            super(message);
+        }
+    }
 }

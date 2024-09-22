@@ -9,7 +9,9 @@ import jakarta.persistence.CascadeType;
     import jakarta.persistence.GeneratedValue;
     import jakarta.persistence.GenerationType;
     import jakarta.persistence.Id;
-    import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
     import jakarta.persistence.Table;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -38,7 +40,9 @@ import lombok.Getter;
         private @Getter @Setter String password;
         @Embedded
         private @Getter @Setter Address address;
-
+        @ManyToOne
+        @JoinColumn(name = "insurance_company_id")
+        private @Getter @Setter InsuranceCompany insuranceCompany;
         public User(String name, String username, Address address, String password){
             this.name = name;
             this.username = username;
@@ -57,8 +61,4 @@ import lombok.Getter;
             insurancePolicy.setUser(this); // Set the user for the policy
             insurancePolicies.add(insurancePolicy);
         }   
-        // public void removePolicy(InsurancePolicy insurancePolicy) {
-        //     insurancePolicies.remove(insurancePolicy);
-        //     insurancePolicy.setUser(null); // Unset the user from the policy
-        // }
     }

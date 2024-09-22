@@ -8,6 +8,7 @@ import com.example.InsuranceSystem.v11.DTO.DynamicDTO;
 import com.example.InsuranceSystem.v11.DTO.PasswordDTO;
 import com.example.InsuranceSystem.v11.DTO.UpdateUserDTO;
 import com.example.InsuranceSystem.v11.DTO.UserPaymentRequestDTO;
+import com.example.InsuranceSystem.v11.entity.InsuranceCompany;
 import com.example.InsuranceSystem.v11.entity.InsurancePolicy;
 import com.example.InsuranceSystem.v11.entity.User;
 import com.example.InsuranceSystem.v11.exception.InsuranceExceptions;
@@ -91,13 +92,12 @@ public class UserController {
         return ResponseEntity.ok(userService.filterByExpiryDateBetween(userId, startDate,endDate));
     }
     @PostMapping
-    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
+    public ResponseEntity<User> createUser(@Valid @RequestBody User user, @RequestParam Long companyId) {
         User exists = userService.findByUsername(user.getUsername());
         if(exists !=null ){
             throw new UsernameAlreadyExistsException("Username Has Been Used");
         }
-        
-        User createdUser = userService.saveUser(user);
+        User createdUser = userService.saveUser(user, companyId);
         return ResponseEntity.ok(createdUser);
     }
 

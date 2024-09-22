@@ -7,21 +7,24 @@ import java.util.List;
 import java.util.Optional;
 
 import com.example.InsuranceSystem.v11.DTO.UpdateUserDTO;
+import com.example.InsuranceSystem.v11.entity.InsuranceCompany;
 import com.example.InsuranceSystem.v11.entity.InsurancePolicy;
 import com.example.InsuranceSystem.v11.entity.User;
 import com.example.InsuranceSystem.v11.exception.InsuranceExceptions;
 import com.example.InsuranceSystem.v11.repository.UserRepository;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
 @Service
 public class UserService {
     private final UserRepository userRepository;
     private final InsurancePolicyService insurancePolicyService;
-
-    public UserService(UserRepository userRepository, InsurancePolicyService insurancePolicyService){
+    private final InsuranceCompanyService insuranceCompanyService;
+    public UserService(UserRepository userRepository, InsurancePolicyService insurancePolicyService, InsuranceCompanyService insuranceCompanyService){
         this.userRepository = userRepository;
         this.insurancePolicyService = insurancePolicyService;
+        this.insuranceCompanyService = insuranceCompanyService;
     }
     public List<User> findAllUsers() {
         return userRepository.findAll();
@@ -30,7 +33,10 @@ public class UserService {
         return userRepository.findById(id);
     }
     @Transactional
-    public User saveUser(User user){
+    public User saveUser(User user, Long companyId){
+        InsuranceCompany company = insuranceCompanyService.findCompany(companyId).orElseThrow(()->new EntityNotFoundException("Company Not Found"));
+        user.setInsuranceCompany(company); // save company into user 
+        company.addUser(user); //add user to company
         userRepository.save(user);
         for(InsurancePolicy ins:user.getInsurancePolicies()){
             insurancePolicyService.saveInsurancePolicy(ins);
@@ -75,7 +81,7 @@ public class UserService {
         if(!found){
             insurancePolicyService.saveInsurancePolicy(insurancePolicy); // save the new policy into policy repo
             user.addPolicy(insurancePolicy); // add policy to found user 
-            saveUser(user); // update user data in user repo
+            saveUser(user, user.getInsuranceCompany().getId()); // update user data in user repo
             return true;
         }else{
             return false;

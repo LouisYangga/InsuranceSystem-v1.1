@@ -23,6 +23,8 @@ import com.example.InsuranceSystem.v11.exception.InsuranceExceptions;
 import com.example.InsuranceSystem.v11.service.InsurancePolicyService;
 import com.example.InsuranceSystem.v11.service.UserService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/policies")
 public class InsurancePolicyController {
@@ -112,7 +114,7 @@ public class InsurancePolicyController {
     }
     
     @PostMapping
-    public ResponseEntity<ApiResponse> addPolicy(@RequestBody InsurancePolicyDTO insurancePolicyDTO){
+    public ResponseEntity<ApiResponse> addPolicy(@Valid @RequestBody InsurancePolicyDTO insurancePolicyDTO){
         try {
             String policyType = insurancePolicyDTO.getInsuranceType();
             InsurancePolicy insurancePolicy = insurancePolicyService.createInsurancePolicy(insurancePolicyDTO);

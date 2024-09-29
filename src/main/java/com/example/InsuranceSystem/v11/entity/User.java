@@ -3,24 +3,28 @@ package com.example.InsuranceSystem.v11.entity;
 import java.util.ArrayList;
     import java.util.List;
 
+import com.example.InsuranceSystem.v11.validator.DateRange;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
+import java.time.LocalDate;
 import jakarta.persistence.CascadeType;
-    import jakarta.persistence.Embedded;
-    import jakarta.persistence.Entity;
-    import jakarta.persistence.GeneratedValue;
-    import jakarta.persistence.GenerationType;
-    import jakarta.persistence.Id;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-    import jakarta.persistence.Table;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
-    import lombok.NoArgsConstructor;
-    import lombok.Setter;
-    import lombok.ToString;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
     @NoArgsConstructor
     @ToString
 
@@ -48,6 +52,10 @@ import lombok.Getter;
         @ToString.Exclude
         @JsonIgnore
         private @Getter @Setter InsuranceCompany insuranceCompany;
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+        @NotNull(message = "DOB cannot be empty")
+        @DateRange(min = 18, max=100, message = "Age must be between 18 and 100")
+        private @Getter @Setter LocalDate dob;
         public User(String name, String username, Address address, String password){
             this.name = name;
             this.username = username;

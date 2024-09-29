@@ -1,6 +1,7 @@
 package com.example.InsuranceSystem.v11.service;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 
 
@@ -74,7 +75,7 @@ public class InsurancePolicyService {
             // Set type-specific properties
             if (insurancePolicy instanceof ComprehensivePolicy) {
                 ComprehensivePolicy comprehensivePolicy = (ComprehensivePolicy) insurancePolicy;
-                comprehensivePolicy.setDriverAge(insurancePolicyDTO.getDriverAge());
+                comprehensivePolicy.setDriverAge(Period.between(insurancePolicyDTO.getDob(), LocalDate.now()).getYears());
                 comprehensivePolicy.setLevel(insurancePolicyDTO.getLevel());
             } else if (insurancePolicy instanceof ThirdPartyPolicy) {
                 ThirdPartyPolicy thirdPartyPolicy = (ThirdPartyPolicy) insurancePolicy;

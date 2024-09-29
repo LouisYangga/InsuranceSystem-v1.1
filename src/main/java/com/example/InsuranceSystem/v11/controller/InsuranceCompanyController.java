@@ -31,6 +31,4 @@ public class InsuranceCompanyController {
     public ResponseEntity<List<User>> getAllUsers() {
         return ResponseEntity.ok(insuranceCompanyService.getAllUsers());
     }
-    
-    
 }

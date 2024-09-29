@@ -8,7 +8,6 @@ import com.example.InsuranceSystem.v11.DTO.DynamicDTO;
 import com.example.InsuranceSystem.v11.DTO.PasswordDTO;
 import com.example.InsuranceSystem.v11.DTO.UpdateUserDTO;
 import com.example.InsuranceSystem.v11.DTO.UserPaymentRequestDTO;
-import com.example.InsuranceSystem.v11.entity.InsuranceCompany;
 import com.example.InsuranceSystem.v11.entity.InsurancePolicy;
 import com.example.InsuranceSystem.v11.entity.User;
 import com.example.InsuranceSystem.v11.exception.InsuranceExceptions;

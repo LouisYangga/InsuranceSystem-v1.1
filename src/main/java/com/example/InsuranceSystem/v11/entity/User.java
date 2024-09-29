@@ -3,6 +3,9 @@ package com.example.InsuranceSystem.v11.entity;
 import java.util.ArrayList;
     import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.CascadeType;
     import jakarta.persistence.Embedded;
     import jakarta.persistence.Entity;
@@ -35,13 +38,15 @@ import lombok.Getter;
         private @Getter @Setter List<InsurancePolicy> insurancePolicies = new ArrayList<>();
         @Size(min = 3, max = 50, message = "Username must be between 3 and 50 characters")
         private @Getter @Setter String username;
-        // @JsonIgnore
-        // @ToString.Exclude
+        @JsonIgnore
+        @ToString.Exclude
         private @Getter @Setter String password;
         @Embedded
         private @Getter @Setter Address address;
         @ManyToOne
         @JoinColumn(name = "insurance_company_id")
+        @ToString.Exclude
+        @JsonIgnore
         private @Getter @Setter InsuranceCompany insuranceCompany;
         public User(String name, String username, Address address, String password){
             this.name = name;

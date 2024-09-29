@@ -13,10 +13,8 @@ import com.example.InsuranceSystem.v11.repository.InsuranceCompanyRepository;
 @Service
 public class InsuranceCompanyService {
     private final InsuranceCompanyRepository insuranceCompanyRepository;
-    private final UserService userService;
-    public InsuranceCompanyService(InsuranceCompanyRepository insuranceCompanyRepository, UserService userService){
+    public InsuranceCompanyService(InsuranceCompanyRepository insuranceCompanyRepository){
         this.insuranceCompanyRepository = insuranceCompanyRepository;
-        this.userService = userService;
     } 
 
     public InsuranceCompany createCompany(InsuranceCompany company) {
@@ -30,7 +28,11 @@ public class InsuranceCompanyService {
         return insuranceCompanyRepository.findById(id);
     }
     public  List<User> getAllUsers(){
-        List<User> users = userService.findAllUsers();
+        List<InsuranceCompany> companies = insuranceCompanyRepository.findAll(); 
+        List<User> users = new ArrayList<>();
+        for(InsuranceCompany company:companies){
+            users = company.getUsers();
+        }
         return users;
     }
 }

@@ -3,10 +3,7 @@ package com.example.InsuranceSystem.v11.service;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
-
-
 import org.springframework.stereotype.Service;
-
 import com.example.InsuranceSystem.v11.DTO.DTOConverter;
 import com.example.InsuranceSystem.v11.DTO.InsurancePolicyDTO;
 import com.example.InsuranceSystem.v11.entity.Car;

@@ -27,7 +27,7 @@ public class InsurancePolicyDTO {
     private LocalDate expiryDate;
     // Fields specific to ComprehensivePolicy
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-    @NotNull(message = "DOB cannot be empty")
+    @NotNull(message = "dob cannot be empty")
     @DateRange(min = 18, max=100, message = "Age must be between 18 and 100")
     private LocalDate dob;
     private Integer level;

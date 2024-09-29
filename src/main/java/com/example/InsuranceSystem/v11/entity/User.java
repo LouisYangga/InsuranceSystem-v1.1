@@ -53,7 +53,7 @@ import lombok.ToString;
         @JsonIgnore
         private @Getter @Setter InsuranceCompany insuranceCompany;
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-        @NotNull(message = "DOB cannot be empty")
+        @NotNull(message = "dob cannot be empty")
         @DateRange(min = 18, max=100, message = "Age must be between 18 and 100")
         private @Getter @Setter LocalDate dob;
         public User(String name, String username, Address address, String password){

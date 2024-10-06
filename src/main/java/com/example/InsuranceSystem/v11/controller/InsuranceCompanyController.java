@@ -21,14 +21,26 @@ public class InsuranceCompanyController {
     public InsuranceCompanyController(InsuranceCompanyService insuranceCompanyService){
         this.insuranceCompanyService = insuranceCompanyService;
     }
+    @GetMapping("/users")
+    public ResponseEntity<List<User>> getAllUsers() {
+        return ResponseEntity.ok(insuranceCompanyService.getAllUsers());
+    }
+
+    @GetMapping("/age-range-report")
+    public ResponseEntity<Map<String, Integer>> getAgeRangeReport() {
+        Map<String, Integer> report = insuranceCompanyService.getPolicyHoldersByAgeRange();
+        return ResponseEntity.ok(report);
+    }
+
+    @GetMapping("/state-report")
+    public ResponseEntity<Map<String, Integer>> getStateReport(){
+        Map<String, Integer> report = insuranceCompanyService.getStateReport();
+        return ResponseEntity.ok(report);
+    }
 
     @PostMapping("/")
     public ResponseEntity<InsuranceCompany> createCompany(@RequestBody InsuranceCompany company) {
         InsuranceCompany found = insuranceCompanyService.createCompany(company);
         return ResponseEntity.ok(found);
-    }
-    @GetMapping("/users")
-    public ResponseEntity<List<User>> getAllUsers() {
-        return ResponseEntity.ok(insuranceCompanyService.getAllUsers());
     }
 }

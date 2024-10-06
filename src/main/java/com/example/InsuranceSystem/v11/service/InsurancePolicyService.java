@@ -55,6 +55,7 @@ public class InsurancePolicyService {
         List<InsurancePolicy> policies = insurancePolicyRepository.findByPolicyHolderUsername(username);
         return policies;
     }
+    
     public InsurancePolicy createInsurancePolicy(InsurancePolicyDTO insurancePolicyDTO) throws InsuranceExceptions.InvalidCarTypeException{
             String policyType = (String) insurancePolicyDTO.getInsuranceType();
             

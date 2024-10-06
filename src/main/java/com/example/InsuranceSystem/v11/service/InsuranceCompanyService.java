@@ -5,9 +5,11 @@ import java.util.*;
 import org.springframework.stereotype.Service;
 import java.time.*;
 import com.example.InsuranceSystem.v11.entity.InsuranceCompany;
+import com.example.InsuranceSystem.v11.entity.InsurancePolicy;
 import com.example.InsuranceSystem.v11.entity.User;
 import com.example.InsuranceSystem.v11.exception.InsuranceExceptions;
 import com.example.InsuranceSystem.v11.repository.InsuranceCompanyRepository;
+import com.example.InsuranceSystem.v11.repository.InsurancePolicyRepository;
 import com.example.InsuranceSystem.v11.repository.UserRepository;
 
 
@@ -15,9 +17,11 @@ import com.example.InsuranceSystem.v11.repository.UserRepository;
 public class InsuranceCompanyService {
     private final InsuranceCompanyRepository insuranceCompanyRepository;
     private final UserRepository userRepository;
-    public InsuranceCompanyService(InsuranceCompanyRepository insuranceCompanyRepository, UserRepository userRepository){
+    private final InsurancePolicyRepository insurancePolicyRepository;
+    public InsuranceCompanyService(InsuranceCompanyRepository insuranceCompanyRepository, UserRepository userRepository, InsurancePolicyRepository insurancePolicyRepository){
         this.insuranceCompanyRepository = insuranceCompanyRepository;
         this.userRepository = userRepository;
+        this.insurancePolicyRepository = insurancePolicyRepository;
     } 
 
     public InsuranceCompany createCompany(InsuranceCompany company) {
@@ -69,4 +73,19 @@ public class InsuranceCompanyService {
         }
         return stateCount;
     }
+
+    public Map<String, Integer> getCarTypeReport() {
+        List<InsurancePolicy> policies = insurancePolicyRepository.findAll();
+        Map<String,Integer> typeCount = new HashMap<>();
+
+        for(InsurancePolicy policy:policies){
+             String type = policy.getCar().getType().toString();
+             typeCount.put(type, typeCount.getOrDefault(type,0)+1);
+        }
+        return typeCount;
+    }
+
+    // public Map<String, Integer> getGeneralReport(){
+    //     // Give report about average age, average payment price.
+    // }
 }

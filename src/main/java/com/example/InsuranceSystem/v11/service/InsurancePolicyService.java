@@ -57,7 +57,7 @@ public class InsurancePolicyService {
     }
     public InsurancePolicy createInsurancePolicy(InsurancePolicyDTO insurancePolicyDTO) throws InsuranceExceptions.InvalidCarTypeException{
             String policyType = (String) insurancePolicyDTO.getInsuranceType();
-
+            
             // Create the policy using the factory
             InsurancePolicy insurancePolicy = InsurancePolicyFactory.createPolicy(policyType);
 

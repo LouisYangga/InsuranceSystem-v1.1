@@ -117,12 +117,13 @@ public class InsurancePolicyController {
     public ResponseEntity<ApiResponse> addPolicy(@Valid @RequestBody InsurancePolicyDTO insurancePolicyDTO){
         try {
             String policyType = insurancePolicyDTO.getInsuranceType();
-            InsurancePolicy insurancePolicy = insurancePolicyService.createInsurancePolicy(insurancePolicyDTO);
+            User user = userService.findByUsername(insurancePolicyDTO.getPolicyHolderUsername());
             // Set the user
-            User user = userService.findByUsername(insurancePolicy.getPolicyHolderUsername());
             if (user == null) {
                 throw new InsuranceExceptions.UserNotFoundException("Username not Found");
             }
+            insurancePolicyDTO.setDob(user.getDob());
+            InsurancePolicy insurancePolicy = insurancePolicyService.createInsurancePolicy(insurancePolicyDTO);
             insurancePolicy.setUser(user);
             // Add the policy
             boolean success = userService.addPolicy(insurancePolicy, insurancePolicy.getUser().getUserId());

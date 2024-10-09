@@ -43,6 +43,12 @@ public class InsuranceCompanyController {
         Map<String, Integer> report = insuranceCompanyService.getCarTypeReport();
         return ResponseEntity.ok(report);
     }
+
+    @GetMapping("/general-report")
+    public ResponseEntity<Map<String, Object>> getGeneralReport(){
+        Map<String, Object> report = insuranceCompanyService.getGeneralReport();
+        return ResponseEntity.ok(report); 
+    }
     @PostMapping("/")
     public ResponseEntity<InsuranceCompany> createCompany(@RequestBody InsuranceCompany company) {
         InsuranceCompany found = insuranceCompanyService.createCompany(company);
